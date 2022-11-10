@@ -22,7 +22,8 @@ for i in ip:
     url = 'http://'+str(i) + '/phpmyadmin/index.php'
     print(url)
     try:
-        scan_ip = requests.head(url, timeout=0.15, allow_redirects=False)
+        # 根据实际ping延迟来调整0.15数值，单位s
+        scan_ip = requests.head(url, timeout=0.3, allow_redirects=False)
         if scan_ip.status_code == 200:
             try:
                 if re.search('phpmyadmin', scan_ip.headers['Set-Cookie']):
