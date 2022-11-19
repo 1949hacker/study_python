@@ -1,4 +1,3 @@
-import os
 from ping3 import ping
 
 # 功能列表
