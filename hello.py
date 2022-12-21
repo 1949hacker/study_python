@@ -116,14 +116,14 @@ print(myDict)
 del myDict['skill']  # 使用del关键字删除字典内容
 print(myDict)
 
-print(myDict.get("agee", "未查询到对应键值"))  # 使用get函数获取指定键的值,若不存在该键值则默认返回none,或返回指定的默认内容
+print(myDict.get("age", "未查询到对应键值"))  # 使用get函数获取指定键的值,若不存在该键值则默认返回none,或返回指定的默认内容
 
 dict2 = myDict.copy()  # 使用copy函数复制字典
 myDict.clear()  # 使用clear清空字典,此时不影响已完成复制的字典副本
 print(myDict)
 print(dict2)
 
-fromkeysDict = myDict.fromkeys(add_set, 'testVlaue')  # 使用fromkeys函数可以快速创建字典,第一个参数为键,第二个参数为值
+fromkeysDict = myDict.fromkeys(add_set, 'test_value')  # 使用fromkeys函数可以快速创建字典,第一个参数为键,第二个参数为值
 print(fromkeysDict)
 print(fromkeysDict.pop(514))  # 使用pop函数删除字典指定键值并返回其删除的值
 print(fromkeysDict.popitem())  # 使用popitem函数删除字典最后一项键值,并以元组形式返回该键值
@@ -184,14 +184,14 @@ print(res_tuple)  # 元组转列表时每个元素对应转为列表元素
 res_dict = list(myDict)
 print(res_dict)  # 字典转列表仅保留键
 
-set1 = {1, 3, 456, 'afasgq'}
+set1 = {1, 3, 456, 'abcdefg'}
 res_set1 = list(set1)
 print(res_set1)  # 集合转列表是无序的,因为集合本身就是无序的
 
 # 元组同列表强制转换一样,数字类型是非容器类型,不可转换
 # 集合转换除了集合无序特点会导致转换结果也无序外,其余一致
 
-list1 = [['name', 'test'], ['age', 123], ['skill', 'python']]
+list1 = [['name', 'test'], ['age', '123'], ['skill', 'python']]
 res_list1 = dict(list1)  # 列表转dict要求必须为二级列表,且子级列表中必须为2个元素,分别对应键和值
 print(res_list1)
 
