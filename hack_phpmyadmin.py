@@ -5,7 +5,9 @@ import datetime
 import pymysql
 
 print(
-    "本工具需要MySQL服务器用于测试phpMyAdmin用户名密码！\n使用前请确保你已部署MySQL服务器！\n\n\n                                           ——1949HACKER.Vladimir\n                                           https://1949hacker.cn\n                                           Telegram群组：https://t.me/+B5cnCIyGLcZjODA9"
+    "本工具需要MySQL服务器用于测试phpMyAdmin用户名密码！\n使用前请确保你已部署MySQL服务器！\n\n\n                                           "
+    "——1949HACKER.Vladimir\n                                           https://1949hacker.cn\n                        "
+    "Telegram群组：https://t.me/+B5cnCIyGLcZjODA9 "
 )
 HOST = input("请输入你的MySQL服务器地址：")
 USER = input("请输入你的MySQL服务器用户名：")
