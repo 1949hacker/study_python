@@ -76,7 +76,7 @@ def randwrite():
 
 # 创建读文件
 def create_readFile():
-    print("初始化读测试环境,至少需要,等待...")
+    print("初始化读测试环境,至少需要十几分钟甚至几十分钟,等着...")
     cmd = [
         "fio",
         "-name=create_read",
