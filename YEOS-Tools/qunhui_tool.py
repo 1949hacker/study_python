@@ -11,7 +11,7 @@ def randwrite():
     # fio重复运行4次
     print("随机写进行中...")
     for i in range(4):
-        # TODO 根据测试表自行修改cmd中参数
+        # ATTENTION 根据测试表自行修改cmd中参数
         cmd = [
             "fio",
             "-name=YEOS",
@@ -101,7 +101,7 @@ def randread():
     print("随机读进行中...")
 
     for i in range(4):
-        # TODO 根据测试表自行修改cmd中参数
+        # ATTENTION 根据测试表自行修改cmd中参数
         cmd = [
             "fio",
             "-name=YEOS",
@@ -172,7 +172,7 @@ def randrw():
     # fio重复运行4次
     print("随机读写进行中...")
     for i in range(4):
-        # TODO 根据测试表自行修改cmd中参数
+        # ATTENTION 根据测试表自行修改cmd中参数
         cmd = [
             "fio",
             "-name=YEOS",
