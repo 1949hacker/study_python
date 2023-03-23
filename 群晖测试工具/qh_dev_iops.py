@@ -3,9 +3,6 @@
 """
 TODO:
     此脚本已测试兼容环境为Debian 11.6
-    此脚本的测试路径为"/test",请提前将你要测试的设备挂载到"/test"
-    或自行修改下列代码中cmd = ["-filename=/test/..."]中的/test/部分
-    如有其他测试需求,修改cmd = []中的参数即可
 """
 
 import subprocess, re
@@ -33,7 +30,7 @@ def randwrite():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/test/{i}",
+            f"-filename=/dev/{disk}",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -83,24 +80,6 @@ def randwrite():
     )
 
 
-# 创建读文件
-def create_readFile():
-    print("初始化读测试环境,至少需要十几分钟甚至几十分钟,等着...")
-    cmd = [
-        "fio",
-        "-name=create_read",
-        "-size=32G",
-        "-bs=1M",
-        "-direct=1",
-        "-rw=write",
-        "-ioengine=libaio",
-        "-numjobs=12",
-        "-filename=/test/read",
-    ]
-    create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
-    done = create.communicate()[0].decode("utf-8")
-
-
 # 随机读
 def randread():
     # 初始化用于存储运行结果的列表
@@ -123,7 +102,7 @@ def randread():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/test/read",
+            f"-filename=/dev/{disk}",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -194,7 +173,7 @@ def randrw():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/test/read",
+            f"-filename=/dev/{disk}",
             "-rwmixwrite=30",
         ]
 
@@ -232,7 +211,7 @@ def randrw():
             # 写带宽
             bw[3] += bw_num[6]
             bw[4] += bw_num[7]
-            bw[5] += bw_num[8]
+            bw[5] += bw_num[9]
             # 读IOPS
             iops[0] += iops_num[0]
             iops[1] += iops_num[1]
@@ -275,8 +254,8 @@ def rm_file():
 
 
 if __name__ == "__main__":
-    create_readFile()
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n设备挂载模式下IOPS性能测试")
+    disk = input("输入测试/dev/下哪个设备,例sdc,请输入:")
     randwrite()
     randread()
     randrw()
-    rm_file()
