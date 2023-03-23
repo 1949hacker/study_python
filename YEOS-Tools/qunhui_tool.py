@@ -5,8 +5,8 @@ import subprocess, re
 # 随机写
 def randwrite():
     # 初始化用于存储运行结果的列表
-    bw = [0, 0, 0, 0, 0, 0]
-    iops = [0, 0, 0, 0, 0, 0]
+    bw = [0, 0, 0]
+    iops = [0, 0, 0]
 
     # fio重复运行4次
     print("随机写进行中...")
@@ -167,8 +167,8 @@ def randread():
 # 随机读写
 def randrw():
     # 初始化用于存储运行结果的列表
-    bw = [0, 0, 0]
-    iops = [0, 0, 0]
+    bw = [0, 0, 0, 0, 0, 0]
+    iops = [0, 0, 0, 0, 0, 0]
     # fio重复运行4次
     print("随机读写进行中...")
     for i in range(4):
@@ -180,7 +180,7 @@ def randrw():
             "-runtime=120s",
             f"-bs=4k",
             "-direct=1",
-            f"-rw=randwrite",
+            f"-rw=randrw",
             "-ioengine=libaio",
             f"-numjobs=12",
             "-group_reporting",
@@ -191,6 +191,7 @@ def randrw():
 
         # 将fio运行结果标准输出到管道
         fio1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
+
         fio2 = subprocess.Popen(
             ["grep", "samples"], stdin=fio1.stdout, stdout=subprocess.PIPE, shell=False
         )
@@ -201,7 +202,6 @@ def randrw():
         # 初始化列表
         bw_num = []
         iops_num = []
-
         # 匹配数字和小数点，并将其元素更新
         for line in fio.split("\n"):
             if "bw" in line:
@@ -216,33 +216,38 @@ def randrw():
         if i == 0:
             continue
         else:
-            # 将每次运行结果保存到列表
-            bw[0] += bw_num[0]  # Rbw Min
-            bw[1] += bw_num[1]  # Rbw Max
-            bw[2] += bw_num[3]  # Rbw Avg
-            bw[3] += iops_num[0]  # Riops Min
-            bw[4] += iops_num[1]  # Riops Max
-            bw[5] += iops_num[3]  # RiopsAvg
-            iops[0] += bw_num[6]  # Wbw Min
-            iops[1] += iops_num[7]  # Wbw Max
-            iops[2] += iops_num[8]  # Wbw Avg
-            iops[3] += iops_num[6]  # Wiops Min
-            iops[4] += iops_num[7]  # Wiops Max
-            iops[5] += iops_num[8]  # Wiops Avg
+            # 读带宽
+            bw[0] += bw_num[0]
+            bw[1] += bw_num[1]
+            bw[2] += bw_num[3]
+            # 写带宽
+            bw[3] += bw_num[6]
+            bw[4] += bw_num[7]
+            bw[5] += bw_num[8]
+            # 读IOPS
+            iops[0] += iops_num[0]
+            iops[1] += iops_num[1]
+            iops[2] += iops_num[2]
+            # 写IOPS
+            iops[3] += iops_num[5]
+            iops[4] += iops_num[6]
+            iops[5] += iops_num[7]
 
     RbwMin = int(bw[0] / 3)
     RbwMax = int(bw[1] / 3)
     RbwAvg = int(bw[2] / 3)
-    RiopsMin = int(iops[3] / 3)
-    RiopsMax = int(iops[4] / 3)
-    RiopsAvg = int(iops[5] / 3)
+
     WbwMin = int(bw[3] / 3)
     WbwMax = int(bw[4] / 3)
     WbwAvg = int(bw[5] / 3)
+
+    RiopsMin = int(iops[3] / 3)
+    RiopsMax = int(iops[4] / 3)
+    RiopsAvg = int(iops[5] / 3)
+
     WiopsMin = int(iops[0] / 3)
     WiopsMax = int(iops[1] / 3)
     WiopsAvg = int(iops[2] / 3)
-
     print(
         f"随机读写均值如下:\n"
         f"读:\n带宽最小值:{RbwMin},最大值{RbwMax},均值{RbwAvg}\nIOPS最小值:{RiopsMin},"
