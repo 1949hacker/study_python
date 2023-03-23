@@ -274,7 +274,7 @@ def rm_file():
 
 
 if __name__ == "__main__":
-    print("欢迎使用群晖测试工具\n本工具测试内容:\n1M块大小,多文件模式下IOPS性能测试")
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n1M块大小,单文件模式下IOPS性能测试")
     create_readFile()
     randwrite()
     randread()
