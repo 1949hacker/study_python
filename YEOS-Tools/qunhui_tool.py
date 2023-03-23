@@ -1,4 +1,13 @@
 #!/usr/bin/python3
+
+"""
+TODO:
+    此脚本已测试兼容环境为Debian 11.6
+    此脚本的测试路径为"/test",请提前将你要测试的设备挂载到"/test"
+    或自行修改下列代码中cmd = ["-filename=/test/..."]中的/test/部分
+    如有其他测试需求,修改cmd = []中的参数即可
+"""
+
 import subprocess, re
 
 
