@@ -3,7 +3,8 @@
 """
 TODO:
     此脚本已测试兼容环境为Debian 11.6
-    此脚本的测试路径为"/test",请提前将你要测试的设备挂载到"/test"
+    此脚本的测试路径为"/smbTest",请提前将你要测试的设备挂载到"/smbTest"
+    注意自行根据盘位修改下列numjobs参数
 """
 
 import subprocess, re
@@ -18,20 +19,19 @@ def randwrite():
     # fio重复运行4次
     print("随机写进行中...")
     for i in range(4):
-        # TODO 根据测试表自行修改cmd中参数
         cmd = [
             "fio",
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=4k",
+            "-bs=1M",
             "-direct=1",
             "-rw=randwrite",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/test/{i}",
+            f"-filename=/smbTest/{i}",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -84,6 +84,9 @@ def randwrite():
 # 创建读文件
 def create_readFile():
     print("初始化读测试环境,至少需要十几分钟甚至几十分钟,等着...")
+    clear = subprocess.Popen(["rm", "-rf", "/test/*"], shell=False)
+    clear.wait()
+    print("环境检测完成,创建读测试文件...")
     cmd = [
         "fio",
         "-name=create_read",
@@ -93,7 +96,7 @@ def create_readFile():
         "-rw=write",
         "-ioengine=libaio",
         "-numjobs=12",
-        "-filename=/test/read",
+        "-filename=/smbTest/read",
     ]
     create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
     done = create.communicate()[0].decode("utf-8")
@@ -108,20 +111,19 @@ def randread():
     print("随机读进行中...")
 
     for i in range(4):
-        # TODO 根据测试表自行修改cmd中参数
         cmd = [
             "fio",
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=4k",
+            "-bs=1M",
             "-direct=1",
             "-rw=randwrite",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/test/read",
+            "-filename=/smbTest/read",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -179,20 +181,19 @@ def randrw():
     # fio重复运行4次
     print("随机读写进行中...")
     for i in range(4):
-        # TODO 根据测试表自行修改cmd中参数
         cmd = [
             "fio",
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=4k",
+            "-bs=1M",
             "-direct=1",
             "-rw=randrw",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/test/read",
+            "-filename=/smbTest/read",
             "-rwmixwrite=30",
         ]
 
@@ -273,7 +274,7 @@ def rm_file():
 
 
 if __name__ == "__main__":
-    print("欢迎使用群晖测试工具\n本工具测试内容:\n路径挂载模式下IOPS性能测试")
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n1M块大小下IOPS性能测试")
     create_readFile()
     randwrite()
     randread()
