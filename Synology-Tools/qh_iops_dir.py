@@ -84,7 +84,7 @@ def randwrite():
 # 创建读文件
 def create_readFile():
     print("初始化读测试环境,至少需要十几分钟甚至几十分钟,等着...")
-    clear = subprocess.Popen(["rm", "-rf", "/test/*"], shell=False)
+    clear = subprocess.Popen(["rm", "-rf", "/iopsTest/*"], shell=False)
     clear.wait()
     print("环境检测完成,创建读测试文件...")
     cmd = [
