@@ -15,16 +15,16 @@ def randwrite():
         cmd = [
             "fio",
             "-name=YEOS",
-            f"-size=32G",
+            "-size=32G",
             "-runtime=120s",
-            f"-bs=4k",
+            "-bs=4k",
             "-direct=1",
-            f"-rw=randwrite",
+            "-rw=randwrite",
             "-ioengine=libaio",
-            f"-numjobs=12",
+            "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/data/{i}",
+            f"-filename=/test/{i}",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -80,13 +80,13 @@ def create_readFile():
     cmd = [
         "fio",
         "-name=create_read",
-        f"-size=32G",
-        f"-bs=1M",
+        "-size=32G",
+        "-bs=1M",
         "-direct=1",
-        f"-rw=write",
+        "-rw=write",
         "-ioengine=libaio",
-        f"-numjobs=12",
-        "-filename=/data/read",
+        "-numjobs=12",
+        "-filename=/test/read",
     ]
     create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
     done = create.communicate()[0].decode("utf-8")
@@ -105,16 +105,16 @@ def randread():
         cmd = [
             "fio",
             "-name=YEOS",
-            f"-size=32G",
+            "-size=32G",
             "-runtime=120s",
-            f"-bs=4k",
+            "-bs=4k",
             "-direct=1",
-            f"-rw=randwrite",
+            "-rw=randwrite",
             "-ioengine=libaio",
-            f"-numjobs=12",
+            "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/data/read",
+            "-filename=/test/read",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -185,7 +185,7 @@ def randrw():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/data/read",
+            "-filename=/test/read",
             "-rwmixwrite=30",
         ]
 
@@ -260,7 +260,7 @@ def randrw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen(["rm", "-rf", "/data/*"], shell=False)
+    rm = subprocess.Popen(["rm", "-rf", "/test/*"], shell=False)
     rm.wait()
     print("清除完毕,程序结束!")
 
