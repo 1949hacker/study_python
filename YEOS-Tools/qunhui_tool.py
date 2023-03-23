@@ -176,16 +176,16 @@ def randrw():
         cmd = [
             "fio",
             "-name=YEOS",
-            f"-size=32G",
+            "-size=32G",
             "-runtime=120s",
-            f"-bs=4k",
+            "-bs=4k",
             "-direct=1",
-            f"-rw=randrw",
+            "-rw=randrw",
             "-ioengine=libaio",
-            f"-numjobs=12",
+            "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/data/read",
+            "-filename=/data/read",
             "-rwmixwrite=30",
         ]
 
@@ -260,8 +260,8 @@ def randrw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen("rm", "-rf", "/data/*", shell=False)
-    rm_done = rm.communicate()[0].decode("utf-8")
+    rm = subprocess.Popen(["rm", "-rf", "/data/*"], shell=False)
+    rm.wait()
     print("清除完毕,程序结束!")
 
 
