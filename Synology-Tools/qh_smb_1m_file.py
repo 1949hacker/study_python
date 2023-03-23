@@ -268,13 +268,13 @@ def randrw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen(["rm", "-rf", "/test/*"], shell=False)
+    rm = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
     rm.wait()
     print("清除完毕,程序结束!")
 
 
 if __name__ == "__main__":
-    print("欢迎使用群晖测试工具\n本工具测试内容:\n1M块大小下IOPS性能测试")
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n1M块大小,多文件模式下IOPS性能测试")
     create_readFile()
     randwrite()
     randread()

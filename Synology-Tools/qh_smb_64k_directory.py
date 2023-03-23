@@ -31,7 +31,7 @@ def randwrite():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/smbTest/{i}",
+            f"-directory=/smbTest/{i}/",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -96,7 +96,7 @@ def create_readFile():
         "-rw=write",
         "-ioengine=libaio",
         "-numjobs=12",
-        "-filename=/smbTest/read",
+        "-directory=/smbTest/read/",
     ]
     create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
     done = create.communicate()[0].decode("utf-8")
@@ -123,7 +123,7 @@ def randread():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/smbTest/read",
+            "-directory=/smbTest/read/",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -193,7 +193,7 @@ def randrw():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/smbTest/read",
+            "-directory=/smbTest/read/",
             "-rwmixwrite=30",
         ]
 
@@ -268,13 +268,13 @@ def randrw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen(["rm", "-rf", "/test/*"], shell=False)
+    rm = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
     rm.wait()
     print("清除完毕,程序结束!")
 
 
 if __name__ == "__main__":
-    print("欢迎使用群晖测试工具\n本工具测试内容:\n64k块大小下IOPS性能测试")
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n64k块大小,多文件模式下IOPS性能测试")
     create_readFile()
     randwrite()
     randread()

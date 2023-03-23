@@ -3,7 +3,7 @@
 """
 TODO:
     此脚本已测试兼容环境为Debian 11.6
-    此脚本的测试路径为"/iopsTest",请提前将你要测试的设备挂载到"/iopsTest"
+    此脚本的测试路径为"/smbTest",请提前将你要测试的设备挂载到"/smbTest"
     注意自行根据盘位修改下列numjobs参数
 """
 
@@ -24,14 +24,14 @@ def randwrite():
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=4k",
+            "-bs=64k",
             "-direct=1",
             "-rw=randwrite",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/iopsTest/{i}",
+            f"-filename=/smbTest/{i}",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -96,7 +96,7 @@ def create_readFile():
         "-rw=write",
         "-ioengine=libaio",
         "-numjobs=12",
-        "-filename=/iopsTest/read",
+        "-filename=/smbTest/read",
     ]
     create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
     done = create.communicate()[0].decode("utf-8")
@@ -116,14 +116,14 @@ def randread():
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=4k",
+            "-bs=64k",
             "-direct=1",
             "-rw=randwrite",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/iopsTest/read",
+            "-filename=/smbTest/read",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -186,14 +186,14 @@ def randrw():
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=4k",
+            "-bs=64k",
             "-direct=1",
             "-rw=randrw",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/iopsTest/read",
+            "-filename=/smbTest/read",
             "-rwmixwrite=30",
         ]
 
@@ -268,13 +268,13 @@ def randrw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen(["rm", "-rf", "/iopsTest/*"], shell=False)
+    rm = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
     rm.wait()
     print("清除完毕,程序结束!")
 
 
 if __name__ == "__main__":
-    print("欢迎使用群晖测试工具\n本工具测试内容:\n路径挂载模式下IOPS性能测试")
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n64k块大小,单文件模式下IOPS性能测试")
     create_readFile()
     randwrite()
     randread()
