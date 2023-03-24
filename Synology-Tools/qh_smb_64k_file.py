@@ -322,8 +322,8 @@ def rm_file():
 
 if __name__ == "__main__":
     print("欢迎使用群晖测试工具\n本工具测试内容:\n64k块大小,单文件模式下IOPS性能测试")
-    create_readFile()
     randwrite()
+    create_readFile()
     randread()
     randrw()
     rm_file()
