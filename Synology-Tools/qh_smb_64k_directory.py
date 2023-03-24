@@ -31,7 +31,7 @@ def randwrite():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-directory=/smbTest/{i}/",
+            f"-directory=/smbTest/",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -96,7 +96,7 @@ def create_readFile():
         "-rw=write",
         "-ioengine=libaio",
         "-numjobs=12",
-        "-directory=/smbTest/read/",
+        "-directory=/smbTest/",
     ]
     create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
     done = create.communicate()[0].decode("utf-8")
@@ -123,7 +123,7 @@ def randread():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-directory=/smbTest/read/",
+            "-directory=/smbTest/",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -193,7 +193,7 @@ def randrw():
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-directory=/smbTest/read/",
+            "-directory=/smbTest/",
             "-rwmixwrite=30",
         ]
 
@@ -275,8 +275,9 @@ def rm_file():
 
 if __name__ == "__main__":
     print("欢迎使用群晖测试工具\n本工具测试内容:\n64k块大小,多文件模式下IOPS性能测试")
-    create_readFile()
     randwrite()
+    rm_file()
+    create_readFile()
     randread()
     randrw()
     rm_file()
