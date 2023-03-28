@@ -2,9 +2,10 @@
 
 """
 TODO:
-    此脚本已测试兼容环境为Debian 11.6
-    此脚本的测试路径为"/smbTest",请提前将你要测试的设备挂载到"/smbTest"
-    注意自行根据盘位修改下列numjobs参数
+    自动进行压0.
+    测，路径为/mnt/test/stress
+    时.
+    间和盘位由用户决定
 """
 
 import subprocess, re
@@ -24,14 +25,14 @@ def randwrite():
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=1M",
+            "-bs=4k",
             "-direct=1",
             "-rw=randwrite",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/smbTest/{i}",
+            f"-filename=/dev/{disk}",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -57,7 +58,6 @@ def randwrite():
         # 将str类型转换为float后再转换为int
         bw_num = [int(float(e)) for e in bw_num]
         iops_num = [int(float(e)) for e in iops_num]
-
         # 跳过第一次运行结果
         if i == 0:
             continue
@@ -67,19 +67,39 @@ def randwrite():
                 # 判断格式化的结果中是否存在MiB单位的值
                 if "MiB" in KorM:
                     # 若有则转换为KiB
+                    # 读带宽
                     bw[0] += bw_num[0] * 1024
                     bw[1] += bw_num[1] * 1024
                     bw[2] += bw_num[3] * 1024
+                    # 写带宽
+                    bw[3] += bw_num[6] * 1024
+                    bw[4] += bw_num[7] * 1024
+                    bw[5] += bw_num[9] * 1024
+                    # 读IOPS
                     iops[0] += iops_num[0] * 1024
                     iops[1] += iops_num[1] * 1024
                     iops[2] += iops_num[2] * 1024
+                    # 写IOPS
+                    iops[3] += iops_num[5] * 1024
+                    iops[4] += iops_num[6] * 1024
+                    iops[5] += iops_num[7] * 1024
                 else:
+                    # 读带宽
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
                     bw[2] += bw_num[3]
+                    # 写带宽
+                    bw[3] += bw_num[6]
+                    bw[4] += bw_num[7]
+                    bw[5] += bw_num[9]
+                    # 读IOPS
                     iops[0] += iops_num[0]
                     iops[1] += iops_num[1]
                     iops[2] += iops_num[2]
+                    # 写IOPS
+                    iops[3] += iops_num[5]
+                    iops[4] += iops_num[6]
+                    iops[5] += iops_num[7]
 
     bwMin = int(bw[0] / 3)
     bwMax = int(bw[1] / 3)
@@ -92,27 +112,6 @@ def randwrite():
         f"随机写均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
         f"最大值{iopsMax},均值{iopsAvg}"
     )
-
-
-# 创建读文件
-def create_readFile():
-    print("初始化读测试环境,至少需要十几分钟甚至几十分钟,等着...")
-    clear = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
-    clear.wait()
-    print("环境检测完成,创建读测试文件...")
-    cmd = [
-        "fio",
-        "-name=create_read",
-        "-size=32G",
-        "-bs=1M",
-        "-direct=1",
-        "-rw=write",
-        "-ioengine=libaio",
-        "-numjobs=12",
-        "-filename=/smbTest/read",
-    ]
-    create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
-    done = create.communicate()[0].decode("utf-8")
 
 
 # 随机读
@@ -129,14 +128,14 @@ def randread():
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=1M",
+            "-bs=4k",
             "-direct=1",
             "-rw=randwrite",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/smbTest/read",
+            f"-filename=/dev/{disk}",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -162,7 +161,6 @@ def randread():
         # 将str类型转换为float后再转换为int
         bw_num = [int(float(e)) for e in bw_num]
         iops_num = [int(float(e)) for e in iops_num]
-
         # 跳过第一次运行结果
         if i == 0:
             continue
@@ -212,14 +210,14 @@ def randrw():
             "-name=YEOS",
             "-size=32G",
             "-runtime=120s",
-            "-bs=1M",
+            "-bs=4k",
             "-direct=1",
             "-rw=randrw",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/smbTest/read",
+            f"-filename=/dev/{disk}",
             "-rwmixwrite=30",
         ]
 
@@ -247,48 +245,25 @@ def randrw():
         bw_num = [int(float(e)) for e in bw_num]
         iops_num = [int(float(e)) for e in iops_num]
 
-        # 跳过第一次运行结果
         if i == 0:
             continue
         else:
-            # 格式化fio结果
-            for KorM in fio.split("\n"):
-                # 判断格式化的结果中是否存在MiB单位的值
-                if "MiB" in KorM:
-                    # 若有则转换为KiB
-                    # 读带宽
-                    bw[0] += bw_num[0] * 1024
-                    bw[1] += bw_num[1] * 1024
-                    bw[2] += bw_num[3] * 1024
-                    # 写带宽
-                    bw[3] += bw_num[6] * 1024
-                    bw[4] += bw_num[7] * 1024
-                    bw[5] += bw_num[9] * 1024
-                    # 读IOPS
-                    iops[0] += iops_num[0] * 1024
-                    iops[1] += iops_num[1] * 1024
-                    iops[2] += iops_num[2] * 1024
-                    # 写IOPS
-                    iops[3] += iops_num[5] * 1024
-                    iops[4] += iops_num[6] * 1024
-                    iops[5] += iops_num[7] * 1024
-                else:
-                    # 读带宽
-                    bw[0] += bw_num[0]
-                    bw[1] += bw_num[1]
-                    bw[2] += bw_num[3]
-                    # 写带宽
-                    bw[3] += bw_num[6]
-                    bw[4] += bw_num[7]
-                    bw[5] += bw_num[9]
-                    # 读IOPS
-                    iops[0] += iops_num[0]
-                    iops[1] += iops_num[1]
-                    iops[2] += iops_num[2]
-                    # 写IOPS
-                    iops[3] += iops_num[5]
-                    iops[4] += iops_num[6]
-                    iops[5] += iops_num[7]
+            # 读带宽
+            bw[0] += bw_num[0]
+            bw[1] += bw_num[1]
+            bw[2] += bw_num[3]
+            # 写带宽
+            bw[3] += bw_num[6]
+            bw[4] += bw_num[7]
+            bw[5] += bw_num[9]
+            # 读IOPS
+            iops[0] += iops_num[0]
+            iops[1] += iops_num[1]
+            iops[2] += iops_num[2]
+            # 写IOPS
+            iops[3] += iops_num[5]
+            iops[4] += iops_num[6]
+            iops[5] += iops_num[7]
 
     RbwMin = int(bw[0] / 3)
     RbwMax = int(bw[1] / 3)
@@ -317,15 +292,14 @@ def randrw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
+    rm = subprocess.Popen(["rm", "-rf", "/test/*"], shell=False)
     rm.wait()
     print("清除完毕,程序结束!")
 
 
 if __name__ == "__main__":
-    print("欢迎使用群晖测试工具\n本工具测试内容:\n1M块大小,单文件模式下带宽测试")
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n设备挂载模式下IOPS性能测试")
+    disk = input("输入测试/dev/下哪个设备,例sdc,请输入:")
     randwrite()
-    create_readFile()
     randread()
     randrw()
-    rm_file()
