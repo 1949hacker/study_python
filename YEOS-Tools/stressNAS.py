@@ -21,7 +21,7 @@ def randrw():
         f"-numjobs={stress_disk}",
         "-group_reporting",
         "-iodepth=64",
-        f"-filename={stress_dir}",
+        f"-filename={stress_dir}/test",
         "-rwmixwrite=30",
     ]
 
