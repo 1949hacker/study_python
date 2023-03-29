@@ -8,7 +8,7 @@ def randrw():
     bw = [0, 0, 0, 0, 0, 0]
     iops = [0, 0, 0, 0, 0, 0]
     # fio重复运行4次
-    print("随机读写进行中...")
+    print("randrw is running...")
     cmd = [
         "fio",
         "-name=YEOS",
@@ -51,30 +51,45 @@ def randrw():
     iops_num = [int(float(e)) for e in iops_num]
 
     print(
-        f"随机读写均值如下:\n"
-        f"读:\n带宽最小值:{bw_num[0]},最大值{bw_num[1]},均值{bw_num[3]}\nIOPS最小值:{iops_num[5]},"
-        f"最大值{iops_num[6]},均值{iops_num[7]}"
+        f"randrw results:\n"
+        f"read:\nbw min:{bw_num[0]},max{bw_num[1]},av"
+        f"g{bw_num[3]}\nIOPS min"
+        f":{iops_num[5]},"
+        f"max{iops_num[6]},avg{iops_num[7]}"
         "\n"
-        f"写:\n带宽最小值:{bw_num[6]},最大值{bw_num[7]},均值{bw_num[9]}\nIOPS最小值"
+        f"write:\nbw min:{bw_num[6]},max{bw_num[7]},avg{bw_num[9]}\nIOPS min"
         f":{iops_num[0]},"
-        f"最大值{iops_num[1]},均值{iops_num[2]}"
+        f"max{iops_num[1]},avg{iops_num[2]}"
     )
 
 
 if __name__ == "__main__":
     print(
         """
-        欢迎使用YEOS硬盘压测工具！
-        使用本工具前，需要设置压测路径、硬盘数量、时间
+        welcome to use YEOS disk stress tool!
+        Before use,You need set stress dir,disk and runtime
     """
     )
-    stress_dir = input("请输入压测路径[务必输入完整路径如 /mnt/test/]:")
-    stress_time = input("请输入压测时间[秒:s 分:m 时:h]:")
-    stress_disk = input("请输入硬盘数量[直接输入数字如 8]:")
-    print("开始压测！\n务必等待压测结束并输出运行结果！\n不可中途停止！\n压测结束后需要删除产生的文件！")
+    stress_dir = input(
+        "Please input stress dir[must enter an absolute path,is like this: "
+        "/mnt/test/]:"
+    )
+    stress_time = input(
+        "Please input stress tool runtime[seconds:s minutes:m hours:h],"
+        "is like this: 24h,Indicates run 24 hours:"
+    )
+    stress_disk = input("Please input stress disk[just input number,is like this:8]:")
+    print(
+        f"Stress is started...\nYou must wait for the program to finish "
+        "running!\nIf you stop halfway, you need to manually delete the test "
+        f"file under {stress_dir}."
+    )
     randrw()
     rm_stressFile = subprocess.Popen(
         ["rm", "-rf", f"{stress_dir}/*"], stdout=subprocess.PIPE, shell=False
     )
     rm_stressFile.wait()
-    print(f"测试文件已自动清除，请检查{stress_dir}下是否存在残留文件。")
+    print(
+        f"The test file has been deleted, but please check again to see if "
+        f"there are still any residues in the {stress_dir} directory."
+    )
