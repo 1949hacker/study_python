@@ -14,6 +14,7 @@ def randrw():
         "-name=YEOS",
         "-size=32G",
         f"-runtime={stress_time}",
+        "-time_base",
         "-bs=4k",
         "-direct=1",
         "-rw=randrw",
@@ -67,8 +68,13 @@ if __name__ == "__main__":
         使用本工具前，需要设置压测路径、硬盘数量、时间
     """
     )
-    stress_dir = input("请输入压测路径:")
+    stress_dir = input("请输入压测路径[务必输入完整路径如 /mnt/test/]:")
     stress_time = input("请输入压测时间[秒:s 分:m 时:h]:")
-    stress_disk = input("请输入硬盘数量:")
-    print("开始压测！\n务必等待压测结束并输出运行结果！\n不可中途停止！\n压测结束后需要删除压测所用池！")
+    stress_disk = input("请输入硬盘数量[直接输入数字如 8]:")
+    print("开始压测！\n务必等待压测结束并输出运行结果！\n不可中途停止！\n压测结束后需要删除产生的文件！")
     randrw()
+    rm_stressFile = subprocess.Popen(
+        ["rm", "-rf", f"{stress_dir}/*"], stdout=subprocess.PIPE, shell=False
+    )
+    rm_stressFile.wait()
+    print(f"测试文件已自动清除，请检查{stress_dir}下是否存在残留文件。")
