@@ -81,7 +81,7 @@ def randwrite():
                     print(f"带宽第{i}次值:{bw}")
                     print(f"IOPS第{i}次值:{iops}")
                 elif "KiB" in KorM:
-                    print("输出结果为KiB单位,将进行转换")
+                    print("输出结果为KiB单位,不转换")
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
                     bw[2] += bw_num[3]
@@ -196,7 +196,7 @@ def randread():
                     print(f"带宽第{i}次值:{bw}")
                     print(f"IOPS第{i}次值:{iops}")
                 elif "KiB" in KorM:
-                    print("输出结果为KiB单位,将进行转换")
+                    print("输出结果为KiB单位,不转换")
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
                     bw[2] += bw_num[3]
@@ -299,7 +299,7 @@ def randrw():
                     print(f"带宽第{i}次值:{bw}")
                     print(f"IOPS第{i}次值:{iops}")
                 elif "KiB" in KorM:
-                    print("输出结果为KiB单位,将进行转换")
+                    print("输出结果为KiB单位,不转换")
                     # 读带宽
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
