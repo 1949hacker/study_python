@@ -72,7 +72,7 @@ def randwrite():
                 # 判断格式化的结果中是否存在MiB单位的值
                 if "MiB" in KorM:
                     # 若有则转换为KiB
-                    print("MiB")
+                    print("输出结果为MiB单位,将进行转换")
                     bw[0] += bw_num[0] * 1024
                     bw[1] += bw_num[1] * 1024
                     bw[2] += bw_num[3] * 1024
@@ -82,7 +82,7 @@ def randwrite():
                     print(f"带宽第{i}次值:{bw}")
                     print(f"IOPS第{i}次值:{iops}")
                 elif "KiB" in KorM:
-                    print("KiB")
+                    print("输出结果为KiB单位,将进行转换")
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
                     bw[2] += bw_num[3]
@@ -100,7 +100,8 @@ def randwrite():
     iopsAvg = int(iops[2] / 3)
 
     print(
-        f"随机写均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
+        f"\n\n\n随机写均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值"
+        f":{iopsMin},"
         f"最大值{iopsMax},均值{iopsAvg}"
     )
 
@@ -165,7 +166,7 @@ def randread():
                 # 判断格式化的结果中是否存在MiB单位的值
                 if "MiB" in KorM:
                     # 若有则转换为KiB
-                    print("MiB")
+                    print("输出结果为MiB单位,将进行转换")
                     bw[0] += bw_num[0] * 1024
                     bw[1] += bw_num[1] * 1024
                     bw[2] += bw_num[3] * 1024
@@ -175,7 +176,7 @@ def randread():
                     print(f"带宽第{i}次值:{bw}")
                     print(f"IOPS第{i}次值:{iops}")
                 elif "KiB" in KorM:
-                    print("KiB")
+                    print("输出结果为KiB单位,将进行转换")
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
                     bw[2] += bw_num[3]
@@ -193,7 +194,7 @@ def randread():
     iopsAvg = int(iops[2] / 3)
 
     print(
-        f"随机读均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
+        f"\n\n\n随机读均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
         f"最大值{iopsMax},均值{iopsAvg}"
     )
 
@@ -257,7 +258,7 @@ def randrw():
             for KorM in fio.split("\n"):
                 # 判断格式化的结果中是否存在MiB单位的值
                 if "MiB" in KorM:
-                    print("MiB")
+                    print("输出结果为MiB单位,将进行转换")
                     # 若有则转换为KiB
                     # 读带宽
                     bw[0] += bw_num[0] * 1024
@@ -278,7 +279,7 @@ def randrw():
                     print(f"带宽第{i}次值:{bw}")
                     print(f"IOPS第{i}次值:{iops}")
                 elif "KiB" in KorM:
-                    print("MiB")
+                    print("输出结果为KiB单位,将进行转换")
                     # 读带宽
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
@@ -314,7 +315,7 @@ def randrw():
     WiopsMax = int(iops[1] / 3)
     WiopsAvg = int(iops[2] / 3)
     print(
-        f"随机读写均值如下:\n"
+        f"\n\n\n随机读写均值如下:\n"
         f"读:\n带宽最小值:{RbwMin},最大值{RbwMax},均值{RbwAvg}\nIOPS最小值:{RiopsMin},"
         f"最大值{RiopsMax},均值{RiopsAvg}"
         "\n"
