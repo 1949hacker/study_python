@@ -33,6 +33,7 @@ def randwrite():
             "-group_reporting",
             "-iodepth=64",
             f"-filename=/iopsTest/{i}",
+            "-randrepeat=0",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -138,6 +139,7 @@ def randread():
             "-group_reporting",
             "-iodepth=64",
             "-filename=/iopsTest/read",
+            "-randrepeat=0",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -222,6 +224,7 @@ def randrw():
             "-iodepth=64",
             "-filename=/iopsTest/read",
             "-rwmixwrite=30",
+            "-randrepeat=0",
         ]
 
         # 将fio运行结果标准输出到管道
