@@ -32,6 +32,7 @@ def randwrite():
             "-group_reporting",
             "-iodepth=64",
             f"-filename=/dev/{disk}",
+            "-randrepeat=0",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -70,9 +71,9 @@ def randwrite():
                     bw[0] += bw_num[0] * 1024
                     bw[1] += bw_num[1] * 1024
                     bw[2] += bw_num[3] * 1024
-                    iops[0] += iops_num[0] * 1024
-                    iops[1] += iops_num[1] * 1024
-                    iops[2] += iops_num[2] * 1024
+                    iops[0] += iops_num[0]
+                    iops[1] += iops_num[1]
+                    iops[2] += iops_num[2]
                 else:
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
@@ -117,6 +118,7 @@ def randread():
             "-group_reporting",
             "-iodepth=64",
             f"-filename=/dev/{disk}",
+            "-randrepeat=0",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -155,9 +157,9 @@ def randread():
                     bw[0] += bw_num[0] * 1024
                     bw[1] += bw_num[1] * 1024
                     bw[2] += bw_num[3] * 1024
-                    iops[0] += iops_num[0] * 1024
-                    iops[1] += iops_num[1] * 1024
-                    iops[2] += iops_num[2] * 1024
+                    iops[0] += iops_num[0]
+                    iops[1] += iops_num[1]
+                    iops[2] += iops_num[2]
                 else:
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
@@ -202,6 +204,7 @@ def randrw():
             "-iodepth=64",
             f"-filename=/dev/{disk}",
             "-rwmixwrite=30",
+            "-randrepeat=0",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -246,13 +249,13 @@ def randrw():
                     bw[4] += bw_num[7] * 1024
                     bw[5] += bw_num[9] * 1024
                     # 读IOPS
-                    iops[0] += iops_num[0] * 1024
-                    iops[1] += iops_num[1] * 1024
-                    iops[2] += iops_num[2] * 1024
+                    iops[0] += iops_num[0]
+                    iops[1] += iops_num[1]
+                    iops[2] += iops_num[2]
                     # 写IOPS
-                    iops[3] += iops_num[5] * 1024
-                    iops[4] += iops_num[6] * 1024
-                    iops[5] += iops_num[7] * 1024
+                    iops[3] += iops_num[5]
+                    iops[4] += iops_num[6]
+                    iops[5] += iops_num[7]
                 else:
                     # 读带宽
                     bw[0] += bw_num[0]

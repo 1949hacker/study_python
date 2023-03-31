@@ -10,14 +10,14 @@ TODO:
 import subprocess, re
 
 
-# 随机写
+# 顺序写
 def randwrite():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0]
     iops = [0, 0, 0]
 
     # fio重复运行4次
-    print("随机写进行中...")
+    print("顺序写进行中...")
     for i in range(4):
         cmd = [
             "fio",
@@ -27,7 +27,7 @@ def randwrite():
             "-time_base",
             "-bs=1m",
             "-direct=1",
-            "-rw=randwrite",
+            "-rw=write",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
@@ -71,9 +71,9 @@ def randwrite():
                     bw[0] += bw_num[0] * 1024
                     bw[1] += bw_num[1] * 1024
                     bw[2] += bw_num[3] * 1024
-                    iops[0] += iops_num[0] * 1024
-                    iops[1] += iops_num[1] * 1024
-                    iops[2] += iops_num[2] * 1024
+                    iops[0] += iops_num[0]
+                    iops[1] += iops_num[1]
+                    iops[2] += iops_num[2]
                 else:
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
@@ -90,7 +90,7 @@ def randwrite():
     iopsAvg = int(iops[2] / 3)
 
     print(
-        f"随机写均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
+        f"顺序写均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
         f"最大值{iopsMax},均值{iopsAvg}"
     )
 
@@ -116,13 +116,13 @@ def create_readFile():
     done = create.communicate()[0].decode("utf-8")
 
 
-# 随机读
+# 顺序读
 def randread():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0]
     iops = [0, 0, 0]
     # fio重复运行4次
-    print("随机读进行中...")
+    print("顺序读进行中...")
 
     for i in range(4):
         cmd = [
@@ -133,7 +133,7 @@ def randread():
             "-time_base",
             "-bs=1m",
             "-direct=1",
-            "-rw=randwrite",
+            "-rw=write",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
@@ -177,9 +177,9 @@ def randread():
                     bw[0] += bw_num[0] * 1024
                     bw[1] += bw_num[1] * 1024
                     bw[2] += bw_num[3] * 1024
-                    iops[0] += iops_num[0] * 1024
-                    iops[1] += iops_num[1] * 1024
-                    iops[2] += iops_num[2] * 1024
+                    iops[0] += iops_num[0]
+                    iops[1] += iops_num[1]
+                    iops[2] += iops_num[2]
                 else:
                     bw[0] += bw_num[0]
                     bw[1] += bw_num[1]
@@ -196,18 +196,18 @@ def randread():
     iopsAvg = int(iops[2] / 3)
 
     print(
-        f"随机读均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
+        f"顺序读均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
         f"最大值{iopsMax},均值{iopsAvg}"
     )
 
 
-# 随机读写
+# 顺序读写
 def randrw():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0, 0, 0, 0]
     iops = [0, 0, 0, 0, 0, 0]
     # fio重复运行4次
-    print("随机读写进行中...")
+    print("顺序读写进行中...")
     for i in range(4):
         cmd = [
             "fio",
@@ -217,7 +217,7 @@ def randrw():
             "-time_base",
             "-bs=1m",
             "-direct=1",
-            "-rw=randrw",
+            "-rw=rw",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
@@ -268,13 +268,13 @@ def randrw():
                     bw[4] += bw_num[7] * 1024
                     bw[5] += bw_num[9] * 1024
                     # 读IOPS
-                    iops[0] += iops_num[0] * 1024
-                    iops[1] += iops_num[1] * 1024
-                    iops[2] += iops_num[2] * 1024
+                    iops[0] += iops_num[0]
+                    iops[1] += iops_num[1]
+                    iops[2] += iops_num[2]
                     # 写IOPS
-                    iops[3] += iops_num[5] * 1024
-                    iops[4] += iops_num[6] * 1024
-                    iops[5] += iops_num[7] * 1024
+                    iops[3] += iops_num[5]
+                    iops[4] += iops_num[6]
+                    iops[5] += iops_num[7]
                 else:
                     # 读带宽
                     bw[0] += bw_num[0]
@@ -309,7 +309,7 @@ def randrw():
     WiopsMax = int(iops[1] / 3)
     WiopsAvg = int(iops[2] / 3)
     print(
-        f"随机读写均值如下:\n"
+        f"顺序读写均值如下:\n"
         f"读:\n带宽最小值:{RbwMin},最大值{RbwMax},均值{RbwAvg}\nIOPS最小值:{RiopsMin},"
         f"最大值{RiopsMax},均值{RiopsAvg}"
         "\n"
