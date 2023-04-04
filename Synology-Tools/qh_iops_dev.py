@@ -23,7 +23,7 @@ def randwrite():
             "fio",
             "-name=YEOS",
             "-size=32G",
-            "-runtime=120s",
+            "-runtime=60s",
             "-time_base",
             "-bs=4k",
             "-direct=1",
@@ -119,7 +119,7 @@ def randread():
             "fio",
             "-name=YEOS",
             "-size=32G",
-            "-runtime=120s",
+            "-runtime=60s",
             "-time_base",
             "-bs=4k",
             "-direct=1",
@@ -211,7 +211,7 @@ def randrw():
             "fio",
             "-name=YEOS",
             "-size=32G",
-            "-runtime=120s",
+            "-runtime=60s",
             "-time_base",
             "-bs=4k",
             "-direct=1",
@@ -278,6 +278,8 @@ def randrw():
                     iops[5] += iops_num[7]
                     print(f"带宽第{i}次值:{bw}")
                     print(f"IOPS第{i}次值:{iops}")
+                    # 因fio结果存在读写两行，避免重复执行，所以直接跳过后续循环
+                    break
                 elif "KiB" in KorM:
                     print("输出结果为KiB单位,不转换")
                     # 读带宽
@@ -298,6 +300,8 @@ def randrw():
                     iops[5] += iops_num[7]
                     print(f"带宽第{i}次值:{bw}")
                     print(f"IOPS第{i}次值:{iops}")
+                    # 因fio结果存在读写两行，避免重复执行，所以直接跳过后续循环
+                    break
 
     RbwMin = int(bw[0] / 3)
     RbwMax = int(bw[1] / 3)
