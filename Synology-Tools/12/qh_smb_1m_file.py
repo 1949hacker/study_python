@@ -3,21 +3,21 @@
 """
 TODO:
     此脚本已测试兼容环境为Debian 11.6
-    此脚本的测试路径为"/iopsTest",请提前将你要测试的设备挂载到"/iopsTest"
+    此脚本的测试路径为"/smbTest",请提前将你要测试的设备挂载到"/smbTest"
     注意自行根据盘位修改下列numjobs参数
 """
 
 import subprocess, re
 
 
-# 随机写
-def randwrite():
+# 顺序写
+def write():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0]
     iops = [0, 0, 0]
 
     # fio重复运行4次
-    print("随机写进行中...")
+    print("顺序写进行中...")
     for i in range(4):
         cmd = [
             "fio",
@@ -25,15 +25,14 @@ def randwrite():
             "-size=32G",
             "-runtime=60s",
             "-time_base",
-            "-bs=4k",
+            "-bs=1m",
             "-direct=1",
-            "-rw=randwrite",
+            "-rw=write",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            f"-filename=/iopsTest/{i}",
-            "-randrepeat=0",
+            f"-filename=/smbTest/{i}",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -59,6 +58,7 @@ def randwrite():
         # 将str类型转换为float后再转换为int
         bw_num = [int(float(e)) for e in bw_num]
         iops_num = [int(float(e)) for e in iops_num]
+
         print(f"单次带宽运行结果:{bw_num}")
         print(f"单次IOPS运行结果:{iops_num}")
 
@@ -99,7 +99,7 @@ def randwrite():
     iopsAvg = int(iops[2] / 3)
 
     print(
-        f"\n\n\n随机写均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
+        f"\n\n\n顺序写均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
         f"最大值{iopsMax},均值{iopsAvg}"
     )
 
@@ -107,7 +107,7 @@ def randwrite():
 # 创建读文件
 def create_readFile():
     print("初始化读测试环境,至少需要十几分钟甚至几十分钟,等着...")
-    clear = subprocess.Popen(["rm", "-rf", "/iopsTest/*"], shell=False)
+    clear = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
     clear.wait()
     print("环境检测完成,创建读测试文件...")
     cmd = [
@@ -119,19 +119,19 @@ def create_readFile():
         "-rw=write",
         "-ioengine=libaio",
         "-numjobs=12",
-        "-filename=/iopsTest/read",
+        "-filename=/smbTest/read",
     ]
     create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
     done = create.communicate()[0].decode("utf-8")
 
 
-# 随机读
-def randread():
+# 顺序读
+def read():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0]
     iops = [0, 0, 0]
     # fio重复运行4次
-    print("随机读进行中...")
+    print("顺序读进行中...")
 
     for i in range(4):
         cmd = [
@@ -140,15 +140,14 @@ def randread():
             "-size=32G",
             "-runtime=60s",
             "-time_base",
-            "-bs=4k",
+            "-bs=1m",
             "-direct=1",
-            "-rw=randwrite",
+            "-rw=write",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/iopsTest/read",
-            "-randrepeat=0",
+            "-filename=/smbTest/read",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -174,6 +173,7 @@ def randread():
         # 将str类型转换为float后再转换为int
         bw_num = [int(float(e)) for e in bw_num]
         iops_num = [int(float(e)) for e in iops_num]
+
         print(f"单次带宽运行结果:{bw_num}")
         print(f"单次IOPS运行结果:{iops_num}")
 
@@ -214,18 +214,18 @@ def randread():
     iopsAvg = int(iops[2] / 3)
 
     print(
-        f"\n\n\n随机读均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
+        f"\n\n\n顺序读均值如下:\n带宽最小值:{bwMin},最大值{bwMax},均值{bwAvg}\nIOPS最小值:{iopsMin},"
         f"最大值{iopsMax},均值{iopsAvg}"
     )
 
 
-# 随机读写
-def randrw():
+# 顺序读写
+def rw():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0, 0, 0, 0]
     iops = [0, 0, 0, 0, 0, 0]
     # fio重复运行4次
-    print("随机读写进行中...")
+    print("顺序读写进行中...")
     for i in range(4):
         cmd = [
             "fio",
@@ -233,16 +233,15 @@ def randrw():
             "-size=32G",
             "-runtime=60s",
             "-time_base",
-            "-bs=4k",
+            "-bs=1m",
             "-direct=1",
-            "-rw=randrw",
+            "-rw=rw",
             "-ioengine=libaio",
             "-numjobs=12",
             "-group_reporting",
             "-iodepth=64",
-            "-filename=/iopsTest/read",
+            "-filename=/smbTest/read",
             "-rwmixwrite=30",
-            "-randrepeat=0",
         ]
 
         # 将fio运行结果标准输出到管道
@@ -301,6 +300,7 @@ def randrw():
                     print(f"IOPS第{i}次值:{iops}")
                     # 因fio结果存在读写两行，避免重复执行，所以直接跳过后续循环
                     break
+
                 elif "KiB" in KorM:
                     print("输出结果为KiB单位,不转换")
                     # 读带宽
@@ -340,7 +340,7 @@ def randrw():
     WiopsMax = int(iops[1] / 3)
     WiopsAvg = int(iops[2] / 3)
     print(
-        f"\n\n\n随机读写均值如下:\n"
+        f"\n\n\n顺序读写均值如下:\n"
         f"读:\n带宽最小值:{RbwMin},最大值{RbwMax},均值{RbwAvg}\nIOPS最小值:{RiopsMin},"
         f"最大值{RiopsMax},均值{RiopsAvg}"
         "\n"
@@ -351,17 +351,17 @@ def randrw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen(["rm", "-rf", "/iopsTest/*"], shell=False)
+    rm = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
     rm.wait()
     print("清除完毕,程序结束!")
 
 
 if __name__ == "__main__":
-    print("欢迎使用群晖测试工具\n本工具测试内容:\n路径挂载模式下IOPS性能测试")
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n1M块大小,单文件模式下带宽测试")
     rm_file()
-    randwrite()
+    write()
     rm_file()
     create_readFile()
-    randread()
-    randrw()
+    read()
+    rw()
     rm_file()

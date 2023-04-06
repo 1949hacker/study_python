@@ -29,7 +29,7 @@ def randwrite():
             "-direct=1",
             "-rw=randwrite",
             "-ioengine=libaio",
-            "-numjobs=12",
+            "-numjobs=8",
             "-group_reporting",
             "-iodepth=64",
             f"-filename=/iopsTest/{i}",
@@ -118,7 +118,7 @@ def create_readFile():
         "-direct=1",
         "-rw=write",
         "-ioengine=libaio",
-        "-numjobs=12",
+        "-numjobs=8",
         "-filename=/iopsTest/read",
     ]
     create = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
@@ -144,7 +144,7 @@ def randread():
             "-direct=1",
             "-rw=randwrite",
             "-ioengine=libaio",
-            "-numjobs=12",
+            "-numjobs=8",
             "-group_reporting",
             "-iodepth=64",
             "-filename=/iopsTest/read",
@@ -237,7 +237,7 @@ def randrw():
             "-direct=1",
             "-rw=randrw",
             "-ioengine=libaio",
-            "-numjobs=12",
+            "-numjobs=8",
             "-group_reporting",
             "-iodepth=64",
             "-filename=/iopsTest/read",
@@ -358,7 +358,9 @@ def rm_file():
 
 if __name__ == "__main__":
     print("欢迎使用群晖测试工具\n本工具测试内容:\n路径挂载模式下IOPS性能测试")
+    rm_file()
     randwrite()
+    rm_file()
     create_readFile()
     randread()
     randrw()

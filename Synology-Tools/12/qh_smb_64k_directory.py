@@ -11,7 +11,7 @@ import subprocess, re
 
 
 # 顺序写
-def randwrite():
+def write():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0]
     iops = [0, 0, 0]
@@ -25,7 +25,7 @@ def randwrite():
             "-size=32G",
             "-runtime=60s",
             "-time_base",
-            "-bs=1m",
+            "-bs=64k",
             "-direct=1",
             "-rw=write",
             "-ioengine=libaio",
@@ -125,7 +125,7 @@ def create_readFile():
 
 
 # 顺序读
-def randread():
+def read():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0]
     iops = [0, 0, 0]
@@ -139,7 +139,7 @@ def randread():
             "-size=32G",
             "-runtime=60s",
             "-time_base",
-            "-bs=1m",
+            "-bs=64k",
             "-direct=1",
             "-rw=read",
             "-ioengine=libaio",
@@ -218,7 +218,7 @@ def randread():
 
 
 # 顺序读写
-def randrw():
+def rw():
     # 初始化用于存储运行结果的列表
     bw = [0, 0, 0, 0, 0, 0]
     iops = [0, 0, 0, 0, 0, 0]
@@ -231,7 +231,7 @@ def randrw():
             "-size=32G",
             "-runtime=60s",
             "-time_base",
-            "-bs=1m",
+            "-bs=64k",
             "-direct=1",
             "-rw=rw",
             "-ioengine=libaio",
@@ -354,10 +354,11 @@ def rm_file():
 
 
 if __name__ == "__main__":
-    print("欢迎使用群晖测试工具\n本工具测试内容:\n1M块大小,多文件模式下带宽测试")
-    randwrite()
+    print("欢迎使用群晖测试工具\n本工具测试内容:\n64k块大小,多文件模式下带宽测试")
+    rm_file()
+    write()
     rm_file()
     create_readFile()
-    randread()
-    randrw()
+    read()
+    rw()
     rm_file()
