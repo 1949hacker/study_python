@@ -6,8 +6,7 @@ TODO:
     此脚本的测试路径为"/smbTest",请提前将你要测试的设备挂载到"/smbTest"
     注意自行根据盘位修改下列numjobs参数
 """
-import os
-import subprocess, re
+import subprocess, re, os
 
 
 # 顺序写

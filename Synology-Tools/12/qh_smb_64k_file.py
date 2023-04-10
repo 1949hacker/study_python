@@ -7,7 +7,7 @@ TODO:
     注意自行根据盘位修改下列numjobs参数
 """
 
-import subprocess, re
+import subprocess, re, os
 
 
 # 顺序写
