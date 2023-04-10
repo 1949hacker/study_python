@@ -6,7 +6,7 @@ TODO:
     此脚本的测试路径为"/smbTest",请提前将你要测试的设备挂载到"/smbTest"
     注意自行根据盘位修改下列numjobs参数
 """
-
+import os
 import subprocess, re
 
 
@@ -348,8 +348,7 @@ def rw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
-    rm.wait()
+    rm = os.system("rm -rf /smbTest/*")
     print("清除完毕,程序结束!")
 
 

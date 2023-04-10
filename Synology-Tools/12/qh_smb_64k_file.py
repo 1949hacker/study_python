@@ -348,8 +348,7 @@ def rw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = subprocess.Popen(["rm", "-rf", "/smbTest/*"], shell=False)
-    rm.wait()
+    rm = os.system("rm -rf /smbTest/*")
     print("清除完毕,程序结束!")
 
 
