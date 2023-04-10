@@ -351,7 +351,7 @@ def randrw():
 
 def rm_file():
     print("请等待程序清除测试残留文件...")
-    rm = os.system("rm -rf /smbTest/*")
+    rm = os.system("rm -rf /iopsTest/*")
     print("清除完毕,程序结束!")
 
 
