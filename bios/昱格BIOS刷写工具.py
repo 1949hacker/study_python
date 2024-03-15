@@ -44,6 +44,8 @@ print(command)
 sys(command)
 
 print("BIOS刷入完毕,请检查是否刷入正确:")
-sys('AMIDEWINx64.EXE /BM /BP /BV /BS')
+sys('AMIDEWINx64.EXE /BM /BP /BV /BS\nAMIDEWINx64.EXE '
+    '/SM /SP '
+    '/SV /SS')
 print("按ESC退出程序.")
 sys('pause>nul')
