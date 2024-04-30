@@ -38,6 +38,11 @@ def flashBin(hostname, port, username, password, local_file, remote_path):
         match = re.search(r'fr\s*:\s*(\w+)', stdout.read().decode())
         print("刷写完成!固件版本:" + match.group(1))
 
+        # 清除firmware
+        command_rm = "rm -f /root/firmware && reboot"
+        stdin, stdout, stderr = ssh_client.exec_command(command_flash)
+        print(stdout.read().decode())
+
         # 关闭SCP客户端和SSH客户端
         scp_client.close()
         ssh_client.close()
