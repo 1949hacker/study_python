@@ -40,7 +40,7 @@ def flashBin(hostname, port, username, password, local_file, remote_path):
 
         # 清除firmware
         command_rm = "rm -f /root/firmware && reboot"
-        stdin, stdout, stderr = ssh_client.exec_command(command_flash)
+        stdin, stdout, stderr = ssh_client.exec_command(command_rm)
         print(stdout.read().decode())
 
         # 关闭SCP客户端和SSH客户端
