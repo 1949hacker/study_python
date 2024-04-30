@@ -69,3 +69,6 @@ if local_file == "" :
 remote_path = "/root/firmware"
 
 flashBin(hostname, port, username, password, local_file, remote_path)
+
+print("按ESC退出程序.")
+sys('pause>nul')
