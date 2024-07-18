@@ -34,7 +34,7 @@ while check == 'n':
             bp = input("请输入产品名称（如YGENAS-R-H12-A）:")
             bv = input("请输入产品版本（默认V1.0）:")
             # [^-]匹配非-字符，+连续匹配，-包含-到匹配结果中，[^-]+-，连续匹配非-de字符并将-包含到结果中，如：YGENAS-
-            # [^-]+-[^-]+-[^-]+，连续匹配2组符合*****-格式的和1组****格式的字符，也就是 YGENAS- R- H12
+            # [^-]+-[^-]+-[^-]+，连续匹配2组符合*****-格式的和1组****格式的字符，也就是 YGENAS- R- H12~
             # .group(1)，.做为语法结构，表示调用re的match方法输出的group(1)的结果
             bm = re.match(r'^([^-]+-[^-]+-[^-]+)', bp).group(1)
             bs = generate_random_string()
@@ -44,18 +44,38 @@ while check == 'n':
                           "%s\n产品序列号(BS、SS）: "
                           "%s\n请核对!("
                           "y/n)"
-                          % (bm,bp,bv,bs))
+                          % (bm, bp, bv, bs))
 
 print("接下来将开始BIOS刷入,请等待...")
 
-command = 'AMIDEWINx64.EXE /BM "%s" /BP "%s" /BV "%s" /BS "%s"' % (bm,bp,bv,bs)
-system_command = 'AMIDEWINx64.EXE /SM "%s" /SP "%s" /SV "%s" /SS "%s"' % (bm,bp,bv,bs)
-print(command)
-sys(command)
+# AMIDEWINX64在部分主板有BUG，只能依次刷写，所以这样写
+
+cmd1 = "AMIDEWINx64.EXE /BM %s" % bm
+cmd2 = "AMIDEWINx64.EXE /BP %s" % bp
+cmd3 = "AMIDEWINx64.EXE /BV %s" % bv
+cmd4 = "AMIDEWINx64.EXE /BS %s" % bs
+cmd5 = "AMIDEWINx64.EXE /SM %s" % bm
+cmd6 = "AMIDEWINx64.EXE /SP %s" % bp
+cmd7 = "AMIDEWINx64.EXE /SV %s" % bv
+cmd8 = "AMIDEWINx64.EXE /SS %s" % bs
+
+sys(cmd1)
+sys(cmd2)
+sys(cmd3)
+sys(cmd4)
+sys(cmd5)
+sys(cmd6)
+sys(cmd7)
+sys(cmd8)
 
 print("BIOS刷入完毕,请检查是否刷入正确:")
-sys('AMIDEWINx64.EXE /BM /BP /BV /BS\nAMIDEWINx64.EXE '
-    '/SM /SP '
-    '/SV /SS')
+sys("AMIDEWINx64.EXE /BM\n")
+sys("AMIDEWINx64.EXE /BP\n")
+sys("AMIDEWINx64.EXE /BV\n")
+sys("AMIDEWINx64.EXE /BS\n")
+sys("AMIDEWINx64.EXE /SM\n")
+sys("AMIDEWINx64.EXE /SP\n")
+sys("AMIDEWINx64.EXE /SV\n")
+sys("AMIDEWINx64.EXE /SS\n")
 print("按ESC退出程序.")
 sys('pause>nul')
