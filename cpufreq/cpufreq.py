@@ -28,27 +28,33 @@ def cpu_stress_test():
 
     while True:
         cpu_freq = psutil.cpu_freq()
-        print(f"CPU freq: {cpu_freq.current} MHz")
+        cpu_usage = psutil.cpu_percent(interval=1)  # 获取 CPU 使用率
+        print(f"CPU freq: {cpu_freq.current} MHz, CPU usage: {cpu_usage}%")
         time.sleep(1)
 
-        choice = input("wanna stop？(y/n)")
-        if choice.lower() == 'y':
-            for p in processes:
-                p.terminate()  # 结束压测进程
-            break
+
+def display_cpu_usage():
+    while True:
+        cpu_usage = psutil.cpu_percent(interval=1)  # 获取 CPU 使用率
+        print(f"CPU usage: {cpu_usage}%")
+        time.sleep(1)
 
 
 def main():
-    print("1. CPU freq")
-    print("2. Stress CPU")
-    choice = int(input("choice: "))
+    print("1. Display CPU Frequency")
+    print("2. Stress CPU and display freq")
+    print("3. Display CPU Usage")
+    choice = int(input("Enter your choice: "))
 
     if choice == 1:
         display_cpu_frequency()
     elif choice == 2:
         cpu_stress_test()
+    elif choice == 3:
+        display_cpu_usage()
     else:
-        print("WTF?")
+        print("Invalid choice")
 
 
-main()
+if __name__ == "__main__":
+    main()
